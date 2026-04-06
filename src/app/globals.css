@@ -11,7 +11,23 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+/* এটি তোমার globals.css ফাইলে যোগ করলে সবচেয়ে ভালো হবে */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
 
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0d1117; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

@@ -6,22 +6,19 @@ import Project from "@/models/Project";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Trophy, Star, Target, Code2, ArrowRight, Zap } from "lucide-react";
+import { Trophy, Star, Target, Code2, ArrowRight, Zap, ShieldCheck, ShieldAlert } from "lucide-react";
+import PayoutSettings from "./PayoutSettings"; // আমাদের নতুন ক্লায়েন্ট কম্পোনেন্ট
 
 export default async function Dashboard() {
-  // ১. ইউজারের সেশন চেক করা
   const session = await getServerSession(authOptions);
 
-  // লগইন করা না থাকলে হোমপেজে পাঠিয়ে দেবে
   if (!session) {
     redirect("/"); 
   }
 
-  // ২. ডাটাবেস কানেক্ট করে ইউজারের ডেটা আনা
   await connectMongoDB();
   const dbUser = await User.findOne({ email: session.user.email }).lean();
 
-  // ৩. ইউজারের কমপ্লিট করা প্রজেক্টগুলোর বিস্তারিত ডেটা আনা
   let completedProjectsDetails = [];
   if (dbUser && dbUser.completedProjects?.length > 0) {
     completedProjectsDetails = await Project.find({
@@ -29,16 +26,15 @@ export default async function Dashboard() {
     }).lean();
   }
 
-  // ইউজারের লেভেল ক্যালকুলেট করা (প্রতি ১০০ পয়েন্টে ১ লেভেল)
   const points = dbUser?.points || 0;
   const level = Math.floor(points / 100) + 1;
+  const isVerified = dbUser?.isVerified || false; // ভেরিফিকেশন স্ট্যাটাস
 
   return (
     <div className="min-h-screen p-6 md:p-12 max-w-7xl mx-auto bg-slate-950 text-white">
       
       {/* Header Profile Section */}
       <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-8 mb-10 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
-        {/* Background Glow */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full" />
         
         <Image 
@@ -50,7 +46,19 @@ export default async function Dashboard() {
         />
         
         <div className="flex-1 text-center md:text-left z-10">
-          <h1 className="text-3xl font-bold mb-2">{session.user.name}</h1>
+          <h1 className="text-3xl font-bold mb-2 flex items-center justify-center md:justify-start gap-3 flex-wrap">
+            {session.user.name}
+            {/* ডাইনামিক ভেরিফিকেশন ব্যাজ */}
+            {isVerified ? (
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-[10px] font-black uppercase tracking-widest">
+                <ShieldCheck size={14} /> Verified
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-400 rounded-full text-[10px] font-black uppercase tracking-widest">
+                <ShieldAlert size={14} /> Unverified
+              </span>
+            )}
+          </h1>
           <p className="text-slate-400">{session.user.email}</p>
         </div>
 
@@ -68,6 +76,13 @@ export default async function Dashboard() {
         </div>
       </div>
 
+      {/* আমাদের নতুন Payout Settings Form */}
+      <PayoutSettings 
+        email={session.user.email} 
+        initialVerified={isVerified} 
+        initialBankDetails={dbUser?.bankDetails} 
+      />
+
       {/* Stats Overview */}
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
         <Target className="text-blue-500" /> Learning Journey
@@ -84,7 +99,6 @@ export default async function Dashboard() {
           </div>
         </div>
         
-        {/* আরও স্ট্যাটস যোগ করা যেতে পারে ভবিষ্যতে */}
         <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 flex items-center gap-4 opacity-50">
           <div className="p-4 bg-purple-500/10 text-purple-400 rounded-xl">
             <Zap size={24} />
@@ -114,7 +128,6 @@ export default async function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {completedProjectsDetails.map((project) => (
             <div key={project._id.toString()} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500/50 transition-colors flex flex-col h-full relative overflow-hidden">
-              {/* Success Badge */}
               <div className="absolute top-4 right-4 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-emerald-500/20 flex items-center gap-1">
                 <Target size={12} /> Completed
               </div>
@@ -133,7 +146,6 @@ export default async function Dashboard() {
           ))}
         </div>
       )}
-
     </div>
   );
 }

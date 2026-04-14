@@ -1,8 +1,17 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true, // সাময়িকভাবে টাইপ এরর ইগনোর করবে
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com', // Google Images
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com', // GitHub Images (যাতে পরে এরর না আসে)
+      }
+    ],
   },
-  eslint: {
-    ignoreDuringBuilds: true, // বিল্ডের সময় লিন্টিং চেক করবে না
-  },
-}
+};
+
+export default nextConfig;

@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@stripe/stripe-js": "^9.2.0",
     "@studio-freight/react-lenis": "^0.0.47",
+    "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.38.0",
     "groq-sdk": "^1.1.2",
@@ -20,7 +22,8 @@
     "next-auth": "^4.24.13",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-to-print": "^3.3.0"
+    "react-to-print": "^3.3.0",
+    "stripe": "^22.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -29,9 +32,9 @@
     "tailwindcss": "^4"
   },
   "overrides": {
-  "@studio-freight/react-lenis": {
-    "react": "$react",
-    "react-dom": "$react-dom"
+    "@studio-freight/react-lenis": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   }
-}
 }

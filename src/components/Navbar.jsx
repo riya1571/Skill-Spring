@@ -108,12 +108,12 @@ export default function Navbar() {
             </div>
           ) : (
             // Logged Out State: Login Button
-            <button
-              onClick={() => signIn("google")}
-              className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all"
-            >
-              Log in / Sign up
-            </button>
+            <Link
+  href="/login"
+  className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all inline-block"
+>
+  Log in / Sign up
+</Link>
           )}
         </div>
 

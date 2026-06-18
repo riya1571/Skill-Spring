@@ -1,20 +1,12 @@
 import mongoose from "mongoose";
 
-const ProjectSchema = new mongoose.Schema({
-  userEmail: { 
-    type: String, 
-    required: true,
-    index: true // খোঁজার সুবিধার জন্য ইনডেক্স করে দিলাম
-  },
+const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  category: { type: String, default: "Web Development" },
-  technologies: String,
-  description: String,
-  live: { type: String, default: "#" },
-  client: { type: String, default: "" },
-  server: { type: String, default: "" },
-  createdAt: { type: Date, default: Date.now }
-});
+  description: { type: String, required: true },
+  category: { type: String, required: true },
+  difficulty: { type: String, required: true },
+  tags: [{ type: String }],
+  tasksCount: { type: Number, default: 0 },
+}, { timestamps: true });
 
-// মডেলে যেন ডুপ্লিকেট না হয় তাই এই লাইনটি জরুরি
-export default mongoose.models.Project || mongoose.model("Project", ProjectSchema);
+export default mongoose.models.Project || mongoose.model("Project", projectSchema);

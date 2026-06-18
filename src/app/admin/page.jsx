@@ -1,18 +1,16 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
     CheckCircle, XCircle, Clock, Terminal,
     LayoutDashboard, Briefcase, Code, Swords, Plus, Trash2, Loader2, Send,
-    ChevronLeft, ChevronRight, Pencil, Trophy, Tags, Users, ListTodo, Star
+    ChevronLeft, ChevronRight, Pencil, Trophy, Users, ListTodo, Star
 } from "lucide-react";
 
-export default function AdminDashboard() {
-    // ============================================================================
-    // ১. Hooks & States
-    // ============================================================================
+// মেইন লজিকটা এই কম্পোনেন্টের ভেতরে রাখা হলো
+function AdminDashboardContent() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -22,7 +20,6 @@ export default function AdminDashboard() {
     const [totalPages, setTotalPages] = useState(1);
     const [actionLoading, setActionLoading] = useState(null);
 
-    // Applications & Tasks States
     const [applications, setApplications] = useState([]);
     const [appLoading, setAppLoading] = useState(true);
     const [feedback, setFeedback] = useState("");
@@ -33,7 +30,6 @@ export default function AdminDashboard() {
     const [showTaskModal, setShowTaskModal] = useState(false);
     const [newTask, setNewTask] = useState({ title: "", company: "", description: "", price: "", difficulty: "Medium", tags: "", deadline: "" });
 
-    // Projects States (Updated from DB)
     const [projects, setProjects] = useState([]);
     const [projectLoading, setProjectLoading] = useState(true);
     const [showProjectModal, setShowProjectModal] = useState(false);
@@ -42,7 +38,6 @@ export default function AdminDashboard() {
         title: "", description: "", category: "Web Development", difficulty: "Beginner", tags: "", tasksCount: 0 
     });
 
-    // Challenges States (Updated from DB)
     const [challenges, setChallenges] = useState([]);
     const [challengeLoading, setChallengeLoading] = useState(true);
     const [showChallengeModal, setShowChallengeModal] = useState(false);
@@ -51,9 +46,6 @@ export default function AdminDashboard() {
         title: "", description: "", points: 0, difficulty: "Intermediate", timeLeft: "", expectedOutput: "", tags: "", participants: 0 
     });
 
-    // ============================================================================
-    // ২. useEffects
-    // ============================================================================
     useEffect(() => {
         if (status === "loading") return;
         if (!session || session?.user?.role !== "admin") router.push("/"); 
@@ -79,9 +71,6 @@ export default function AdminDashboard() {
         if (activeTab === "challenges") fetchChallenges();
     }, [activeTab, page]);
 
-    // ============================================================================
-    // ৩. Fetch Functions
-    // ============================================================================
     const fetchApplications = async () => {
         setAppLoading(true);
         try {
@@ -122,9 +111,6 @@ export default function AdminDashboard() {
         } catch (error) { console.error(error); } finally { setChallengeLoading(false); }
     };
 
-    // ============================================================================
-    // ৪. Action Handlers
-    // ============================================================================
     const handleUpdateAppStatus = async (appId, newStatus, feedbackMsg = "") => {
         setActionLoading(appId);
         try {
@@ -163,7 +149,6 @@ export default function AdminDashboard() {
         } catch (err) { console.error(err); } finally { setActionLoading(null); }
     };
 
-    // Save or Update Project
     const handleSaveProject = async (e) => {
         e.preventDefault();
         setActionLoading("saving_project");
@@ -192,7 +177,6 @@ export default function AdminDashboard() {
         setShowProjectModal(true);
     };
 
-    // Save or Update Challenge
     const handleSaveChallenge = async (e) => {
         e.preventDefault();
         setActionLoading("saving_challenge");
@@ -236,9 +220,6 @@ export default function AdminDashboard() {
         } catch (err) { console.error(err); } finally { setActionLoading(null); }
     };
 
-    // ============================================================================
-    // ৫. UI Rendering
-    // ============================================================================
     if (status === "loading") return <div className="min-h-screen bg-[#05070a] flex items-center justify-center"><Loader2 className="animate-spin text-blue-500" size={48} /></div>;
     if (!session || session?.user?.role !== "admin") return null;
 
@@ -255,8 +236,6 @@ export default function AdminDashboard() {
 
     return (
         <div className="min-h-screen bg-[#05070a] text-gray-300 flex flex-col md:flex-row items-start relative">
-            
-            {/* --- SIDEBAR --- */}
             <div className="w-full md:w-64 bg-[#0d1117] border-r border-gray-800 p-6 flex flex-col gap-2 md:sticky md:top-0 md:h-screen overflow-y-auto z-10 shrink-0">
                 <h2 className="text-xl font-black text-white uppercase tracking-tighter italic mb-8 flex items-center gap-2"><Terminal className="text-blue-500" /> Admin</h2>
                 <button onClick={() => setActiveTab("applications")} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${activeTab === "applications" ? "bg-blue-600 text-white" : "text-gray-500 hover:bg-gray-800"}`}><LayoutDashboard size={16} /> Reviews</button>
@@ -266,8 +245,6 @@ export default function AdminDashboard() {
             </div>
 
             <div className="flex-1 w-full p-6 md:p-12 mb-32 md:mb-0 pb-32">
-                
-                {/* --- TAB: APPLICATIONS (Unchanged but compact) --- */}
                 {activeTab === "applications" && (
                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <h1 className="text-3xl font-black text-white uppercase tracking-tighter italic mb-8 border-b border-gray-800 pb-4">Review <span className="text-blue-500">Submissions</span></h1>
@@ -301,7 +278,6 @@ export default function AdminDashboard() {
                     </motion.div>
                 )}
 
-                {/* --- TAB: TASKS (Unchanged but compact) --- */}
                 {activeTab === "tasks" && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <div className="flex justify-between items-end mb-8 border-b border-gray-800 pb-4">
@@ -322,7 +298,6 @@ export default function AdminDashboard() {
                     </motion.div>
                 )}
 
-                {/* --- TAB: PROJECTS --- */}
                 {activeTab === "projects" && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <div className="flex justify-between items-end mb-8 border-b border-gray-800 pb-4">
@@ -334,7 +309,6 @@ export default function AdminDashboard() {
                             }} className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2"><Plus size={16} /> Add Project</button>
                         </div>
 
-                        {/* Project Modal */}
                         <AnimatePresence>
                             {showProjectModal && (
                                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
@@ -388,7 +362,6 @@ export default function AdminDashboard() {
                     </motion.div>
                 )}
 
-                {/* --- TAB: CHALLENGES --- */}
                 {activeTab === "challenges" && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <div className="flex justify-between items-end mb-8 border-b border-gray-800 pb-4">
@@ -400,7 +373,6 @@ export default function AdminDashboard() {
                             }} className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2"><Plus size={16} /> Add Challenge</button>
                         </div>
 
-                        {/* Challenge Modal */}
                         <AnimatePresence>
                             {showChallengeModal && (
                                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
@@ -463,5 +435,18 @@ export default function AdminDashboard() {
                 )}
             </div>
         </div>
+    );
+}
+
+// এই ফাংশনটি মেইন পেজ হিসেবে এক্সপোর্ট করা হলো যা Suspense বাউন্ডারি প্রোভাইড করে
+export default function AdminDashboard() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#05070a] flex items-center justify-center">
+                <Loader2 className="animate-spin text-blue-500" size={48} />
+            </div>
+        }>
+            <AdminDashboardContent />
+        </Suspense>
     );
 }

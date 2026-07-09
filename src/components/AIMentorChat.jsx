@@ -102,7 +102,7 @@ export default function AIMentorChat({ userEmail }) {
               {messages.length === 0 && (
                 <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-4">
                   <Bot size={60} className="opacity-20" />
-                  <p className="text-sm tracking-wide">হ্যালো জয়াশয়! আজ নতুন কী শিখতে চাও?</p>
+                  <p className="text-sm tracking-wide">হ্যালো! আজ নতুন কী শিখতে চাও?</p>
                 </div>
               )}
               {messages.map((msg, i) => (

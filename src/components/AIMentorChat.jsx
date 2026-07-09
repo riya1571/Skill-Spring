@@ -8,7 +8,7 @@ export default function AIMentorChat({ userEmail }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true); // লোডিং স্টেট
+  const [fetching, setFetching] = useState(true);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -26,8 +26,11 @@ export default function AIMentorChat({ userEmail }) {
     };
     fetchHistory();
   }, [userEmail]);
+
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages]);
 
   const sendMessage = async (e) => {
@@ -59,43 +62,47 @@ export default function AIMentorChat({ userEmail }) {
   };
 
   return (
-    <div className="flex flex-col h-[700px] w-full max-w-4xl mx-auto bg-[#0d1117] rounded-3xl overflow-hidden border border-gray-800 shadow-[0_0_50px_-12px_rgba(59,130,246,0.2)]">
+    <div className="flex flex-col h-[75vh] md:h-[80vh] w-full max-w-4xl mx-auto bg-white/[0.01] backdrop-blur-3xl rounded-[2rem] overflow-hidden border border-white/[0.05] shadow-2xl relative">
       
       {/* --- Header --- */}
-      <div className="bg-[#161b22]/80 backdrop-blur-md p-5 border-b border-gray-800 flex items-center justify-between">
+      <div className="bg-white/[0.02] border-b border-white/[0.05] p-5 flex items-center justify-between relative z-10 shrink-0">
         <div className="flex items-center gap-4">
           <div className="relative">
             <div className="w-12 h-12 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
               <Bot size={28} className="text-white" />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-4 border-[#0d1117] rounded-full"></div>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-4 border-slate-950 rounded-full animate-pulse"></div>
           </div>
           <div>
-            <h3 className="font-bold text-gray-100 flex items-center gap-2">
+            <h3 className="font-bold text-gray-100 flex items-center gap-2 tracking-tight">
               Skill Spring Mentor <Sparkles size={16} className="text-yellow-400" />
             </h3>
-            <p className="text-xs text-blue-400 font-medium">Powered by Llama 3.3</p>
+            <p className="text-[11px] text-blue-400 font-bold uppercase tracking-widest">Powered by Llama 3.3</p>
           </div>
         </div>
-        <div className="hidden md:flex gap-3">
-          <Terminal size={20} className="text-gray-500 cursor-help" />
-          <Code size={20} className="text-gray-500 cursor-help" />
+        <div className="hidden md:flex gap-4 opacity-50">
+          <Terminal size={20} className="text-white cursor-help hover:text-purple-400 transition-colors" />
+          <Code size={20} className="text-white cursor-help hover:text-purple-400 transition-colors" />
         </div>
       </div>
 
       {/* --- Message Area --- */}
-      <div className="flex-1 h-0 overflow-y-auto p-6 space-y-6 bg-[radial-gradient(circle_at_center,_#161b22_0%,_#0d1117_100%)] custom-scrollbar">
+      <div 
+        ref={scrollRef} 
+        data-lenis-prevent="true"
+        className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-black/10 custom-scrollbar relative z-10"
+      >
         <AnimatePresence>
           {fetching ? (
-            <div className="h-full flex items-center justify-center text-blue-400 animate-pulse text-sm font-mono">
-               {">"} পুরনো মেসেজগুলো লোড হচ্ছে...
+            <div className="h-full flex items-center justify-center text-purple-400 animate-pulse text-sm font-mono tracking-widest uppercase">
+               {">"} Loading History...
             </div>
           ) : (
             <>
               {messages.length === 0 && (
-                <div className="h-full flex flex-col items-center justify-center text-gray-600 space-y-4">
-                  <Bot size={60} className="opacity-10" />
-                  <p className="text-sm">হ্যালো জয়াশয়! আজ নতুন কী শিখতে চাও?</p>
+                <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-4">
+                  <Bot size={60} className="opacity-20" />
+                  <p className="text-sm tracking-wide">হ্যালো জয়াশয়! আজ নতুন কী শিখতে চাও?</p>
                 </div>
               )}
               {messages.map((msg, i) => (
@@ -105,11 +112,14 @@ export default function AIMentorChat({ userEmail }) {
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${
-                    msg.role === "user" 
-                      ? "bg-blue-600 text-white rounded-br-none" 
-                      : "bg-[#161b22] text-gray-200 border border-gray-800 rounded-bl-none"
-                  }`}>
+                  <div 
+                    className={`max-w-[85%] sm:max-w-[70%] p-4 rounded-2xl text-[14px] sm:text-[15px] shadow-lg backdrop-blur-md leading-relaxed ${
+                      msg.role === "user" 
+                        ? "bg-purple-600/80 border border-purple-500/50 text-white rounded-br-sm" 
+                        : "bg-white/[0.05] border border-white/[0.1] text-slate-200 rounded-bl-sm"
+                    }`}
+                    style={{ wordBreak: 'break-word' }}
+                  >
                     {msg.content}
                   </div>
                 </motion.div>
@@ -117,27 +127,26 @@ export default function AIMentorChat({ userEmail }) {
             </>
           )}
         </AnimatePresence>
-        <div ref={scrollRef} />
       </div>
 
       {/* --- Input Area --- */}
-      <form onSubmit={sendMessage} className="p-6 bg-[#161b22] border-t border-gray-800">
-        <div className="relative group">
+      <form onSubmit={sendMessage} className="p-4 md:p-5 bg-white/[0.02] border-t border-white/[0.05] relative z-10 shrink-0">
+        <div className="relative group flex gap-2 sm:gap-3">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="আপনার কোডিং সমস্যা এখানে লিখুন..."
-            className="w-full p-4 pl-5 pr-14 bg-[#0d1117] text-gray-100 rounded-2xl border border-gray-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-gray-600 shadow-inner"
+            className="w-full bg-black/40 border border-white/[0.1] rounded-2xl py-3.5 pl-4 sm:pl-5 pr-14 text-[14px] sm:text-[15px] text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500/50 transition-colors shadow-inner"
           />
           <button 
-            disabled={loading}
+            disabled={loading || !input.trim()}
             type="submit"
-            className="absolute right-2 top-2 bottom-2 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:hover:bg-blue-600 active:scale-95"
+            className="px-4 sm:px-6 bg-purple-600 hover:bg-purple-500 text-white rounded-2xl transition-all flex items-center justify-center disabled:opacity-50 shadow-lg shadow-purple-600/20 font-bold"
           >
-            <Send size={20} />
+            <Send size={18} className="sm:w-5 sm:h-5" />
           </button>
         </div>
-        <p className="text-[10px] text-gray-600 mt-3 text-center uppercase tracking-widest font-bold">
+        <p className="text-[9px] text-slate-500 mt-3 text-center uppercase tracking-widest font-bold">
           Skill Spring Official AI Mentor Hub
         </p>
       </form>

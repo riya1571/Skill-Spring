@@ -107,12 +107,15 @@ export default function RealTasksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05070a] text-gray-300 py-20 px-6 relative overflow-hidden">
-      
+    <div className="min-h-screen pb-20 relative overflow-hidden">
+      {/* Background Decorative Gradients */}
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
+
       {/* Toast Notification */}
       <AnimatePresence>
         {toast.show && (
-          <motion.div initial={{ opacity: 0, y: -50, x: 50 }} animate={{ opacity: 1, y: 0, x: 0 }} exit={{ opacity: 0, y: -20, x: 50 }} className={`fixed top-24 right-6 z-[100] px-6 py-4 rounded-2xl shadow-2xl border flex items-center gap-3 font-bold text-sm backdrop-blur-xl ${toast.type === "success" ? "bg-[#0d1117]/90 border-emerald-500/50 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)]" : "bg-[#0d1117]/90 border-red-500/50 text-red-400 shadow-[0_0_30px_rgba(239,68,68,0.2)]"}`}>
+          <motion.div initial={{ opacity: 0, y: -50, x: 50 }} animate={{ opacity: 1, y: 0, x: 0 }} exit={{ opacity: 0, y: -20, x: 50 }} className={`fixed top-24 right-6 z-[100] px-6 py-4 rounded-2xl shadow-2xl border flex items-center gap-3 font-bold text-sm backdrop-blur-xl ${toast.type === "success" ? "bg-slate-900/90 border-emerald-500/50 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)]" : "bg-slate-900/90 border-red-500/50 text-red-400 shadow-[0_0_30px_rgba(239,68,68,0.2)]"}`}>
             {toast.type === "success" ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
             {toast.message}
           </motion.div>
@@ -122,114 +125,175 @@ export default function RealTasksPage() {
       {/* Verification Modal */}
       <AnimatePresence>
         {showVerificationModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="bg-[#0d1117] border border-red-500/30 p-8 rounded-[2rem] max-w-md w-full shadow-2xl text-center">
-              <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4"><AlertCircle size={32} /></div>
-              <h2 className="text-2xl font-black text-white mb-2 uppercase tracking-tight">Verification Required</h2>
-              <p className="text-gray-400 text-sm mb-8 leading-relaxed">You must verify your identity and add bank details in your profile settings before accepting any paid bounties.</p>
+          <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-md px-4">
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="bg-slate-900/90 border border-red-500/30 p-8 rounded-[2rem] max-w-md w-full shadow-[0_0_50px_rgba(239,68,68,0.15)] text-center backdrop-blur-xl">
+              <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-red-500/20"><AlertCircle size={32} /></div>
+              <h2 className="text-2xl font-black text-white mb-3 uppercase tracking-tight">Verification Required</h2>
+              <p className="text-slate-400 text-sm mb-8 leading-relaxed">You must verify your identity and add bank details in your profile settings before accepting any paid bounties.</p>
               <div className="flex gap-4">
-                <button onClick={() => setShowVerificationModal(false)} className="flex-1 py-3 rounded-xl border border-gray-700 text-gray-400 hover:text-white transition font-bold text-xs">Cancel</button>
-                <Link href="/dashboard" className="flex-1 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition font-bold text-xs uppercase tracking-widest flex items-center justify-center">Verify Now</Link>
+                <button onClick={() => setShowVerificationModal(false)} className="flex-1 py-3.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-300 hover:bg-slate-700 hover:text-white transition-all font-bold text-xs uppercase tracking-widest shadow-inner">Cancel</button>
+                <Link href="/dashboard" className="flex-1 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-all font-bold text-xs uppercase tracking-widest shadow-lg shadow-blue-600/20 flex items-center justify-center">Verify Now</Link>
               </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic">Real <span className="text-blue-500">Tasks</span></h1>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 pt-10">
+        <header className="mb-12 md:mb-16 text-center max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold uppercase tracking-widest mb-6 backdrop-blur-md">
+              <Briefcase size={14} /> Earn While You Learn
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight">
+              Real-World{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+                Tasks
+              </span>
+            </h1>
+            <p className="text-slate-400 text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto">
+              Complete real tasks, submit your work, and get paid upon approval. Level up your portfolio while earning.
+            </p>
+          </motion.div>
+        </header>
 
         {loading ? (
-          <div className="flex items-center justify-center h-64"><Loader2 className="animate-spin text-blue-500" size={32} /></div>
+          <div className="flex flex-col items-center justify-center h-64 gap-4">
+            <Loader2 className="animate-spin text-blue-500" size={40} />
+            <span className="text-blue-400/80 text-sm uppercase tracking-widest animate-pulse font-bold">Fetching Tasks...</span>
+          </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {tasks.map((task) => {
-                // ম্যাপ এরর ফিক্স:taskId এর বদলে tasks দিয়ে চেক করা হচ্ছে
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
+              {tasks.map((task, index) => {
                 const myApp = myApplications.find(app => (app.tasks === task._id || app.tasks?._id === task._id));
 
                 return (
-                  <div key={task._id} className="group bg-[#0d1117]/80 border border-gray-800 rounded-3xl p-8 hover:border-blue-500/50 transition-all">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-1">{task.company}</h3>
-                        <h2 className="text-xl font-bold text-white">{task.title}</h2>
-                      </div>
-                      <div className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${getDifficultyColor(task.difficulty)}`}>{task.difficulty}</div>
-                    </div>
-                    <p className="text-sm text-gray-400 mb-6">{task.description}</p>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
+                    key={task._id} 
+                    className="group relative bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-[2rem] p-6 md:p-8 hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.15)] transition-all flex flex-col h-full overflow-hidden"
+                  >
+                    {/* Glowing hover border */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-indigo-500/0 to-purple-500/0 opacity-0 group-hover:from-blue-500/10 group-hover:to-purple-500/10 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                    <div className="pt-6 border-t border-gray-800/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                      <div className="flex gap-4">
-                        <div className="flex items-center gap-1.5 text-sm font-bold text-emerald-400">
-                          <DollarSign size={16} /> {task.price || 0}
+                    <div className="relative z-10 flex flex-col h-full">
+                      <div className="flex justify-between items-start mb-6 gap-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="p-1.5 rounded-lg bg-slate-800/80 border border-slate-700/50 text-slate-400"><Briefcase size={14} /></span>
+                            <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400">{task.company}</h3>
+                          </div>
+                          <h2 className="text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-blue-300 transition-colors">{task.title}</h2>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-gray-500"><Clock size={14} /> {task.deadline}</div>
+                        <div className={`shrink-0 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border backdrop-blur-md shadow-inner ${getDifficultyColor(task.difficulty)}`}>
+                          {task.difficulty}
+                        </div>
                       </div>
                       
-                      {myApp ? (
-                        myApp.status === "accepted" ? (
-                          <span className="text-blue-400 text-xs font-bold uppercase border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg">Approved! Ready to Build.</span>
-                        ) : myApp.status === "rejected" ? (
-                          <span className="text-red-400 text-xs font-bold uppercase border border-red-500/30 bg-red-500/10 px-3 py-1.5 rounded-lg">Revision Required</span>
-                        ) : myApp.status === "completed" ? (
-                          <span className="text-emerald-400 text-xs font-bold uppercase border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg flex items-center gap-1"><CheckCircle2 size={14}/> Paid & Completed</span>
-                        ) : (
-                          <button disabled className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest w-full md:w-auto">
-                            {myApp.status === "applied" ? "Pending Approval" : myApp.status.toUpperCase()}
-                          </button>
-                        )
-                      ) : (
-                        <button onClick={() => handleApply(task._id)} disabled={actionLoading === task._id} className="bg-[#161b22] hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all w-full md:w-auto flex justify-center items-center gap-2">
-                          {actionLoading === task._id ? <Loader2 className="animate-spin" size={16} /> : <>Accept Task <ChevronRight size={14} /></>}
-                        </button>
-                      )}
-                    </div>
+                      <p className="text-sm text-slate-400 mb-8 leading-relaxed flex-grow line-clamp-4">{task.description}</p>
 
-                    {myApp && (myApp.status === "accepted" || myApp.status === "rejected") && (
-                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-6 pt-6 border-t border-dashed border-gray-700 space-y-4">
-                        {myApp.status === "rejected" && (
-                          <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-2xl flex items-start gap-3">
-                            <AlertCircle className="text-red-500 shrink-0 mt-0.5" size={16} />
-                            <div>
-                              <p className="text-red-500 text-[10px] font-black uppercase tracking-widest mb-1">Admin Feedback</p>
-                              <p className="text-gray-300 text-sm italic">"{myApp.adminFeedback || "Please fix the issues and re-submit."}"</p>
-                            </div>
+                      <div className="pt-6 border-t border-slate-700/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-auto">
+                        <div className="flex items-center gap-4 bg-slate-950/40 p-3 rounded-xl border border-slate-800/50">
+                          <div className="flex items-center gap-1.5 text-sm font-black text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.4)]">
+                            <DollarSign size={18} /> {task.price || 0}
                           </div>
-                        )}
-                        <h4 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                          {myApp.status === "rejected" ? "Fix & Re-submit Work" : "Submit Your Work"}
-                        </h4>
-                        <input type="text" placeholder="Live Project Link (Required)" value={submissionData.liveLink} onChange={(e) => setSubmissionData({...submissionData, liveLink: e.target.value})} className="w-full bg-[#05070a] border border-gray-800 p-3 rounded-xl text-xs text-white focus:border-blue-500 outline-none" />
-                        <input type="text" placeholder="Client GitHub Repo (Required)" value={submissionData.clientRepo} onChange={(e) => setSubmissionData({...submissionData, clientRepo: e.target.value})} className="w-full bg-[#05070a] border border-gray-800 p-3 rounded-xl text-xs text-white focus:border-blue-500 outline-none" />
-                        <input type="text" placeholder="Server GitHub Repo (Optional)" value={submissionData.serverRepo} onChange={(e) => setSubmissionData({...submissionData, serverRepo: e.target.value})} className="w-full bg-[#05070a] border border-gray-800 p-3 rounded-xl text-xs text-white focus:border-blue-500 outline-none" />
+                          <div className="w-px h-6 bg-slate-700/50"></div>
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
+                            <Clock size={16} className="text-slate-500" /> {task.deadline}
+                          </div>
+                        </div>
                         
-                        <button onClick={() => handleSubmitWork(myApp._id)} disabled={actionLoading === myApp._id} className="w-full bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex justify-center items-center gap-2 mt-2">
-                          {actionLoading === myApp._id ? <Loader2 className="animate-spin" size={16} /> : (myApp.status === "rejected" ? <>Update & Submit <Send size={14} /></> : <>Submit Project <Send size={14} /></>)}
-                        </button>
-                      </motion.div>
-                    )}
-                  </div>
+                        <div className="w-full sm:w-auto">
+                          {myApp ? (
+                            myApp.status === "accepted" ? (
+                              <span className="w-full sm:w-auto flex justify-center text-blue-400 text-xs font-bold uppercase border border-blue-500/30 bg-blue-500/10 px-5 py-3 rounded-xl shadow-inner">Approved! Ready</span>
+                            ) : myApp.status === "rejected" ? (
+                              <span className="w-full sm:w-auto flex justify-center text-red-400 text-xs font-bold uppercase border border-red-500/30 bg-red-500/10 px-5 py-3 rounded-xl shadow-inner">Revision Required</span>
+                            ) : myApp.status === "completed" ? (
+                              <span className="w-full sm:w-auto flex justify-center items-center gap-1.5 text-emerald-400 text-xs font-bold uppercase border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 rounded-xl shadow-inner"><CheckCircle2 size={16}/> Paid</span>
+                            ) : (
+                              <button disabled className="w-full sm:w-auto flex justify-center bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest opacity-80 cursor-not-allowed">
+                                {myApp.status === "applied" ? "Pending Approval" : myApp.status.toUpperCase()}
+                              </button>
+                            )
+                          ) : (
+                            <button onClick={() => handleApply(task._id)} disabled={actionLoading === task._id} className="w-full sm:w-auto relative bg-slate-800 hover:bg-blue-600 text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex justify-center items-center gap-2 overflow-hidden group/btn border border-slate-700 hover:border-blue-500">
+                              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                              <span className="relative z-10 flex items-center gap-2">
+                                {actionLoading === task._id ? <Loader2 className="animate-spin" size={16} /> : <>Accept Task <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" /></>}
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Submission Section */}
+                      <AnimatePresence>
+                        {myApp && (myApp.status === "accepted" || myApp.status === "rejected") && (
+                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="mt-6 pt-6 border-t border-dashed border-slate-700/70 space-y-4 overflow-hidden">
+                            {myApp.status === "rejected" && (
+                              <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-xl flex items-start gap-3 shadow-inner">
+                                <AlertCircle className="text-red-400 shrink-0 mt-0.5" size={16} />
+                                <div>
+                                  <p className="text-red-400 text-[10px] font-black uppercase tracking-widest mb-1">Admin Feedback</p>
+                                  <p className="text-slate-300 text-sm font-medium italic">"{myApp.adminFeedback || "Please fix the issues and re-submit."}"</p>
+                                </div>
+                              </div>
+                            )}
+                            <h4 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-2 bg-blue-500/10 w-max px-3 py-1.5 rounded-lg border border-blue-500/20">
+                              {myApp.status === "rejected" ? "Fix & Re-submit Work" : "Submit Your Work"}
+                            </h4>
+                            
+                            <div className="space-y-3">
+                              <input type="text" placeholder="Live Project Link (Required)" value={submissionData.liveLink} onChange={(e) => setSubmissionData({...submissionData, liveLink: e.target.value})} className="w-full bg-slate-950/60 border border-slate-700/50 p-3.5 rounded-xl text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-white transition-all shadow-inner hover:border-slate-600" />
+                              <input type="text" placeholder="Client GitHub Repo (Required)" value={submissionData.clientRepo} onChange={(e) => setSubmissionData({...submissionData, clientRepo: e.target.value})} className="w-full bg-slate-950/60 border border-slate-700/50 p-3.5 rounded-xl text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-white transition-all shadow-inner hover:border-slate-600" />
+                              <input type="text" placeholder="Server GitHub Repo (Optional)" value={submissionData.serverRepo} onChange={(e) => setSubmissionData({...submissionData, serverRepo: e.target.value})} className="w-full bg-slate-950/60 border border-slate-700/50 p-3.5 rounded-xl text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-white transition-all shadow-inner hover:border-slate-600" />
+                            </div>
+                            
+                            <button onClick={() => handleSubmitWork(myApp._id)} disabled={actionLoading === myApp._id} className="w-full relative bg-slate-800 border border-slate-700 hover:border-blue-500 text-white px-5 py-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex justify-center items-center gap-2 mt-4 overflow-hidden group/submit shadow-lg">
+                              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-80 group-hover/submit:opacity-100 transition-opacity duration-300" />
+                              <span className="relative z-10 flex items-center gap-2 drop-shadow-md">
+                                {actionLoading === myApp._id ? <Loader2 className="animate-spin" size={16} /> : (myApp.status === "rejected" ? <>Update & Submit <Send size={14} className="group-hover/submit:translate-x-1 group-hover/submit:-translate-y-1 transition-transform" /></> : <>Submit Project <Send size={14} className="group-hover/submit:translate-x-1 group-hover/submit:-translate-y-1 transition-transform" /></>)}
+                              </span>
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
                 );
               })}
             </div>
 
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-4 mt-12 pb-6">
+              <div className="flex justify-center items-center gap-4 mt-16 pb-6">
                 <button 
-                  onClick={() => setPage(p => p - 1)} disabled={page === 1}
-                  className="p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl disabled:opacity-30 transition-all"
+                  onClick={() => {
+                    setPage(p => p - 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }} 
+                  disabled={page === 1}
+                  className="p-3.5 bg-slate-900/60 backdrop-blur-md border border-slate-700/50 hover:bg-slate-800 hover:border-slate-600 text-white rounded-xl disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-inner"
                 >
                   <ChevronLeft size={20} />
                 </button>
-                <span className="text-sm font-bold text-gray-400 uppercase tracking-widest px-4 py-2 bg-[#0d1117] border border-gray-800 rounded-lg">
-                  Page <span className="text-blue-500">{page}</span> of {totalPages}
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest px-5 py-3.5 bg-slate-950/60 backdrop-blur-md border border-slate-700/50 rounded-xl shadow-inner">
+                  Page <span className="text-blue-400 ml-1">{page}</span> of {totalPages}
                 </span>
                 <button 
-                  onClick={() => setPage(p => p + 1)} disabled={page === totalPages}
-                  className="p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl disabled:opacity-30 transition-all"
+                  onClick={() => {
+                    setPage(p => p + 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }} 
+                  disabled={page === totalPages || totalPages === 0}
+                  className="p-3.5 bg-slate-900/60 backdrop-blur-md border border-slate-700/50 hover:bg-slate-800 hover:border-slate-600 text-white rounded-xl disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-inner"
                 >
                   <ChevronRight size={20} />
                 </button>

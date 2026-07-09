@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { GitBranch, Globe, Users, Mail } from "lucide-react";
+import { GitBranch, Globe, Users, Mail, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,11 +16,28 @@ export default function Footer() {
           
           {/* Brand & Description */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600" />
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                Skill Spring
-              </span>
+            <Link href="/" className="flex items-center gap-3 group mb-4">
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 overflow-hidden">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-[auto] -top-1/2 -left-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)] opacity-30"
+                />
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: -10 }}
+                  className="relative z-10 flex items-center justify-center w-[calc(100%-2px)] h-[calc(100%-2px)] bg-slate-950 rounded-xl backdrop-blur-sm"
+                >
+                  <Sparkles className="w-5 h-5 text-purple-300" />
+                </motion.div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-purple-400 drop-shadow-sm group-hover:from-white group-hover:to-white transition-all duration-300">
+                  Skill Spring
+                </span>
+                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest -mt-1 group-hover:text-purple-300 transition-colors">
+                  Elevate Your Craft
+                </span>
+              </div>
             </Link>
             <p className="text-slate-400 max-w-sm">
               An AI-Powered Project-Based Learning Platform. Learn programming by building real-world projects with instant AI mentorship.

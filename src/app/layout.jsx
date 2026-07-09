@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className="bg-slate-950 text-white antialiased">
         {/* AuthProvider দিয়ে পুরো অ্যাপ র‍্যাপ করা হলো */}
         <AuthProvider>

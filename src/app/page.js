@@ -62,10 +62,15 @@ export default function Home() {
     <main className="bg-[#020617] selection:bg-purple-500/30 overflow-hidden relative font-sans">
       
       {/* Background Orbs & Ambient Light */}
-      <div className="absolute top-0 left-0 w-full h-[80vh] overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[10%] w-[40rem] h-[40rem] bg-purple-600/20 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute top-[20%] right-[-10%] w-[35rem] h-[35rem] bg-cyan-600/10 rounded-full blur-[150px] mix-blend-screen" />
-      </div>
+      <div 
+        className="absolute inset-0 w-full h-[150vh] pointer-events-none z-0" 
+        style={{
+          background: `
+            radial-gradient(circle at 15% 10%, rgba(147, 51, 234, 0.15) 0%, transparent 45%),
+            radial-gradient(circle at 90% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 45%)
+          `
+        }}
+      />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 max-w-7xl mx-auto z-10 flex flex-col lg:flex-row items-center gap-12 min-h-[90vh]">

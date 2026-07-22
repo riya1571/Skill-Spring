@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export default async function MentorPage() {
   const session = await getServerSession(authOptions);
 
-  if (!session) redirect("/");
+  if (!session) redirect("/login");
 
   return (
     <div className="min-h-screen bg-[#05070a] text-white selection:bg-blue-500/30">

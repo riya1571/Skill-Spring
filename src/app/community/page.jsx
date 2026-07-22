@@ -5,12 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { Users, UserPlus, UserCheck, MessageSquare, ShieldAlert, Loader2, X, Check } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function CommunityPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const fetchUsers = async () => {
     try {
@@ -61,7 +69,7 @@ export default function CommunityPage() {
       <div className="p-6 md:p-12 max-w-6xl mx-auto relative z-10 pt-10">
         <div className="text-center mb-16 relative">
           <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-            Hacker Community
+            Developer Network
           </h1>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
             Connect with other developers, send requests, and start real-time collaborations.
